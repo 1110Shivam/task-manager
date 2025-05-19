@@ -140,7 +140,7 @@ Must have jdk and node install in system
 ## 🧑‍💻 Developer
 
 **Name:** Shivam
-**Email:** [kk1798190@gmail.com](mailto:kk1798190@gmail.com)
+**Email:** [shivam.111025@gmail.com](mailto:shivam.111025@gmail.com)
 **GitHub:** [github.com/1110Shivam](https://github.com/1110Shivam)
 **LinkedIn:** [linkedin.com/in/shivam1110](https://linkedin.com/in/shivam1110)
 
