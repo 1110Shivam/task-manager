@@ -1,6 +1,6 @@
 # 📝 Task Management Application
 
-🎥 **Demo Video:** [Watch Now](https://drive.google.com/file/d/1HF4STczNgRbZwMc03XRY7cFTvgjmWj_Q/view?usp=sharing)
+🎥 **Demo Video:** [Watch Now](https://drive.google.com/file/d/1W2E4azED5ndAtnhvzMFSqZR6FeTW9wKD/view?usp=sharing)
 
 > This video demonstrates the full functionality of the application including:
 > - Signup & Login
@@ -24,7 +24,7 @@
 
 The **Task Manager Application** is a full-stack web application that allows users to manage daily tasks securely and efficiently. Users can sign up, log in, and perform all CRUD operations (Create, Read, Update, Delete) on their tasks.
 
-The application also features **JWT-based authentication** and supports both traditional email/password login and **Google OAuth2 login** (currently implemented for authentication only).
+The application also features **JWT-based authentication** and supports both traditional email/password login and **Google OAuth2 login**.
 
 ---
 
@@ -32,7 +32,7 @@ The application also features **JWT-based authentication** and supports both tra
 
 * User Registration (Email & Password)
 * User Login with JWT Token
-* Google Login (Authentication only; task functionality not yet integrated)
+* Google Login 
 * Create, View, Update, and Delete tasks
 * Task search functionality
 * Responsive frontend UI
@@ -123,14 +123,14 @@ Must have jdk and node install in system
 
 * **Google Login:**
 
-  * JWT token is set as a cookie after login
-  * Currently, Google users are authenticated but **not authorized for task operations** (planned as a future improvement)
+  * On successful login, a JWT is stored in localStorage
+  * This token is sent in the Authorization header for protected endpoints
+
 
 ---
 
 ## 🔄 Future Improvements
 
-* Allow Google-authenticated users to perform task operations
 * User profile management
 * Role-based access control
 * Task categories or priority levels
@@ -140,8 +140,11 @@ Must have jdk and node install in system
 ## 🧑‍💻 Developer
 
 **Name:** Shivam
+
 **Email:** [shivam.111025@gmail.com](mailto:shivam.111025@gmail.com)
+
 **GitHub:** [github.com/1110Shivam](https://github.com/1110Shivam)
+
 **LinkedIn:** [linkedin.com/in/shivam1110](https://linkedin.com/in/shivam1110)
 
 ---
@@ -150,7 +153,6 @@ Must have jdk and node install in system
 
 * ✅ Backend complete with JWT and Google login
 * ✅ Frontend complete with task CRUD + search
-* 🔒 Google login implemented for auth only (task management disabled for now)
 
 
 
