@@ -13,7 +13,6 @@ import com.mrt.taskmanager.repository.UserRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -29,8 +28,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain) throws ServletException, IOException {
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
 
@@ -39,10 +38,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = getJwtFromRequest(request);
-
-        System.out.println("JWTAUTH#$%^&*&^%$#$%^&*^%$^&#$%@#$%^&"+token);
-        // String token = authHeader.substring(7);
+        String token = authHeader.substring(7);
         String email = jwtUtil.extractEmail(token);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -61,32 +57,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-
-
-    private String getJwtFromRequest(HttpServletRequest request) {
-
-    String bearerToken = request.getHeader("Authorization");
-    if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-        return bearerToken.substring(7);
-    }
-
-
-    System.out.println("Cookieeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee1221211212"+request.getCookies());
-    
-
-
-    if (request.getCookies() != null) {
-        for (Cookie cookie : request.getCookies()) {
-            System.out.println("jdfbjkkbbbbvbwevjbewjkCokieeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee---33232323232--"+cookie.getValue());
-            if ("jwt".equals(cookie.getName())) {
-                return cookie.getValue();
-            }
-            return cookie.getValue();
-        }
-    }
-
-    return null;
-}
-
-
 }

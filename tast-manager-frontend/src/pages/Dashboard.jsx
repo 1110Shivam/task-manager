@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -175,7 +176,10 @@ const Dashboard = () => {
             >
               <FaTimes />
             </button>
-            <TaskForm onClose={closeModal} />
+            <TaskForm
+              onClose={closeModal}
+              onTaskCreated={() => setRefreshTrigger((prev) => prev + 1)}
+            />
           </div>
         </div>
       )}
@@ -185,7 +189,7 @@ const Dashboard = () => {
         <h2 className="text-2xl text-center font-bold mb-6 text-white">
           Your Tasks
         </h2>
-        <TaskCard searchQuery={searchQuery} />
+        <TaskCard searchQuery={searchQuery} refreshTrigger={refreshTrigger} />
       </div>
     </div>
   );

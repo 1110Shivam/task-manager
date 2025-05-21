@@ -7,16 +7,18 @@ const OAuthRedirect = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const userName = params.get("user");
+    const token = params.get("token");
 
-    if (userName) {
+    if (userName && token) {
       const user = {
         name: decodeURIComponent(userName),
-        token: "",
+        token: token
       };
       localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      console.error("Token or user not found in URL");
     }
 
- 
     navigate("/dashboard");
   }, []);
 

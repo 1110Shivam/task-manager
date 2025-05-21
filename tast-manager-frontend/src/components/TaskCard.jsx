@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const TaskCard = ({ searchQuery }) => {
+const TaskCard = ({ searchQuery, refreshTrigger }) => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -17,16 +17,17 @@ const TaskCard = ({ searchQuery }) => {
 
       const url =
         searchQuery && searchQuery.trim() !== ""
-          ? `http://localhost:8080/api/tasks/search?keyword=${encodeURIComponent(searchQuery)}`
+          ? `http://localhost:8080/api/tasks/search?keyword=${encodeURIComponent(
+              searchQuery
+            )}`
           : "http://localhost:8080/api/tasks/get";
 
       const res = await fetch(url, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          Authorization: `Bearer ${token}`,
         },
-        credentials: "include",
       });
 
       if (!res.ok) throw new Error("Failed to fetch tasks");
@@ -48,9 +49,8 @@ const TaskCard = ({ searchQuery }) => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          Authorization: `Bearer ${token}`,
         },
-        credentials: "include",
       });
       if (res.ok) {
         setTasks((prev) => prev.filter((task) => task.id !== id));
@@ -73,15 +73,17 @@ const TaskCard = ({ searchQuery }) => {
 
   const handleUpdate = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/tasks/${editTask.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        credentials: "include",
-        body: JSON.stringify(editTask),
-      });
+      const res = await fetch(
+        `http://localhost:8080/api/tasks/${editTask.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(editTask),
+        }
+      );
 
       if (!res.ok) throw new Error("Update failed");
 
@@ -98,11 +100,10 @@ const TaskCard = ({ searchQuery }) => {
 
   useEffect(() => {
     fetchTasks();
-  }, [searchQuery]);
+  }, [searchQuery, refreshTrigger]);
 
   if (loading) return <p className="text-gray-600">Loading tasks...</p>;
-  if (tasks.length === 0)
-    return <p className="text-white">No tasks found.</p>;
+  if (tasks.length === 0) return <p className="text-white">No tasks found.</p>;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -111,10 +112,13 @@ const TaskCard = ({ searchQuery }) => {
           key={task.id}
           className="bg-white rounded-lg shadow-md p-4 border border-purple-200 relative text-black"
         >
-          <h3 className="text-xl font-bold text-[#3B2171] mb-2">{task.title}</h3>
+          <h3 className="text-xl font-bold text-[#3B2171] mb-2">
+            {task.title}
+          </h3>
 
           <p className="mb-1">
-            <span className="font-semibold">Description:</span> {task.description}
+            <span className="font-semibold">Description:</span>{" "}
+            {task.description}
           </p>
 
           <p className="mb-1">
@@ -126,15 +130,18 @@ const TaskCard = ({ searchQuery }) => {
           </p>
 
           <p className="mb-1">
-            <span className="font-semibold">Remarks:</span> {task.remarks || "—"}
+            <span className="font-semibold">Remarks:</span>{" "}
+            {task.remarks || "—"}
           </p>
 
           <p className="text-sm mt-2">
-            <strong>Created:</strong> {new Date(task.createdOn).toLocaleString()}
+            <strong>Created:</strong>{" "}
+            {new Date(task.createdOn).toLocaleString()}
           </p>
 
           <p className="text-sm">
-            <strong>Updated:</strong> {new Date(task.updatedOn).toLocaleString()}
+            <strong>Updated:</strong>{" "}
+            {new Date(task.updatedOn).toLocaleString()}
           </p>
 
           <div className="flex justify-end gap-2 mt-4">
@@ -153,7 +160,6 @@ const TaskCard = ({ searchQuery }) => {
           </div>
         </div>
       ))}
-
 
       {editTask && (
         <div

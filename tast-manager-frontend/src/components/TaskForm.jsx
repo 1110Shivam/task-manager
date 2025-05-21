@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Button from "./Button";
 
-const TaskForm = ({ onClose }) => {
+const TaskForm = ({ onClose, onTaskCreated }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -31,9 +31,8 @@ const TaskForm = ({ onClose }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          Authorization: `Bearer ${token}`,
         },
-        credentials: "include",
         body: JSON.stringify(formData),
       });
 
@@ -43,12 +42,16 @@ const TaskForm = ({ onClose }) => {
       }
 
       const data = await response.json();
-      console.log("Task created:", data);
+      // console.log("Task created:", data);
       toast.success("Task created successfully!");
+
+      if (onTaskCreated) {
+        onTaskCreated(); 
+      }
       onClose();
     } catch (err) {
       toast.error("Failed to create task");
-      console.error("Error creating task:", err);
+      // console.error("Error creating task:", err);
     }
   };
 

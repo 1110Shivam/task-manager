@@ -3,14 +3,11 @@ package com.mrt.taskmanager.security;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
-
 import com.mrt.taskmanager.entity.Provider;
 import com.mrt.taskmanager.entity.User;
 import com.mrt.taskmanager.repository.UserRepository;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -40,30 +37,23 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             return;
         }
 
-        Optional<User> userOpt = userRepo.findByEmail(email);
-        User user;
-        if (userOpt.isPresent()) {
-            user = userOpt.get();
-        } else {
-            user = new User();
-            user.setEmail(email);
-            user.setName(oauthUser.getAttribute("name"));
-            user.setProvider(Provider.GOOGLE);
-            userRepo.save(user);
-        }
+        User user = userRepo.findByEmail(email).orElseGet(() -> {
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setName(oauthUser.getAttribute("name"));
+            newUser.setProvider(Provider.GOOGLE);
+            return userRepo.save(newUser);
+        });
 
+     
         String token = jwtUtil.generateToken(email);
 
-        System.out.println("################################################################################################ "+token);
+        // System.out.println("################################################################################################
+        // "+token);
 
-        Cookie jwtCookie = new Cookie("jwt", token);
-        jwtCookie.setHttpOnly(true);
-        jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(2 * 60 * 60);
-        jwtCookie.setSecure(false);
-        response.addCookie(jwtCookie);
         String name = URLEncoder.encode(user.getName(), StandardCharsets.UTF_8);
-        String redirectUrl = "http://localhost:5173/oauth/redirect?user=" + name;
+        String redirectUrl = "http://localhost:5173/oauth/redirect?token=" + token + "&user=" + name;
+
         response.sendRedirect(redirectUrl);
     }
 }
