@@ -11,7 +11,7 @@ const Header = () => {
       <div className="py-4 px-6 md:px-10 flex items-center justify-between">
         <h2 className="text-2xl md:text-3xl select-none font-bold flex items-center gap-2">
           <FaTasks className="text-[#3B2171]" />
-          ORITSO TASK
+          TASK MANAGER
         </h2>
 
         <div className="md:hidden">
